@@ -1,0 +1,21 @@
+{
+  "_comment": "This is a template - actual config.json is created by setup wizard",
+  "server": {
+    "ip": "YOUR_SERVER_IP",
+    "ssh_user": "root",
+    "ssh_port": 22,
+    "claude_user": "claudedev"
+  },
+  "claude": {
+    "oauth": {
+      "access_token": "YOUR_ACCESS_TOKEN",
+      "refresh_token": "YOUR_REFRESH_TOKEN",
+      "expires_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  "setup": {
+    "completed": false,
+    "timestamp": null,
+    "version": "1.0"
+  }
+}

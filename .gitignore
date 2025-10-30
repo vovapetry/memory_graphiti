@@ -1,0 +1,67 @@
+# Credentials and sensitive files
+*.credentials.json
+.credentials.json
+config.json
+.env
+.env.local
+*.key
+*.pem
+id_rsa*
+id_ed25519*
+
+# Local configuration
+.claude/settings.local.json
+
+# Logs
+*.log
+*.logs
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*~
+nul
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Docker
+.docker/
+
+# Output files
+deploy_output.txt
+*_output.txt
+*_report.txt
+test_results/
+
+# Personal notes
+NOTES.md
+TODO.personal.md
+
+# Test data
+test_data/
+scratch/
