@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  dev-env:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+    image: ghcr.io/vovapetry/memory-dev-env:latest
+    container_name: memory-dev-env
+    hostname: memory-dev
+    restart: unless-stopped
+
+    # Environment variables for configuration
+    environment:
+      - GITHUB_USER=${GITHUB_USER}
+      - GITHUB_EMAIL=${GITHUB_EMAIL}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - CLAUDE_CONFIG=${CLAUDE_CONFIG}
+      - TZ=${TZ:-UTC}
+
+    # Mount Docker socket for Docker-in-Docker support
+    volumes:
+      # Docker socket (allows running Docker commands from inside container)
+      - /var/run/docker.sock:/var/run/docker.sock
+
+      # Workspace - mount your project directory here
+      - ./workspace:/home/claudedev/workspace
+
+      # Persistent home directory (preserves configs, cache, etc.)
+      - dev-home:/home/claudedev
+
+      # SSH keys (optional - for Git operations)
+      - ~/.ssh:/home/claudedev/.ssh:ro
+
+    # Port mappings (adjust as needed for your services)
+    ports:
+      - "8080:8080"  # Application port
+      - "8081:8081"  # Service port
+      - "8082:8082"  # API port
+      - "3000:3000"  # Frontend/Dashboard port
+      - "6379:6379"  # Redis/FalkorDB port
+
+    # Network configuration
+    networks:
+      - dev-network
+
+    # Keep container running
+    stdin_open: true
+    tty: true
+
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+
+    # Healthcheck
+    healthcheck:
+      test: ["CMD", "claude", "--version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+# Define named volumes for persistence
+volumes:
+  dev-home:
+    driver: local
+    name: memory-dev-home
+
+# Define networks
+networks:
+  dev-network:
+    driver: bridge
+    name: memory-dev-network
